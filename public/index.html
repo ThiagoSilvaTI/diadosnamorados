@@ -227,7 +227,7 @@
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, #ff3366 0%, #ff6b6b 100%);
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: white;
             border: none;
             padding: 15px 40px;
@@ -252,7 +252,7 @@
 
         .btn-submit:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255,51,102,0.4);
+            box-shadow: 0 5px 15px rgba(37,211,102,0.4);
         }
 
         .valor-total {
@@ -435,20 +435,6 @@
             background: #ff6b6b;
         }
 
-        .whatsapp-note {
-            background: #25D36610;
-            border: 1px solid #25D366;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .whatsapp-note small {
-            color: #25D366;
-            font-weight: bold;
-        }
-
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2em;
@@ -543,12 +529,6 @@
         <div class="form-section">
             <form id="pedidoForm">
                 <div class="form-group">
-                    <label>📱 Número do WhatsApp para receber o pedido: *</label>
-                    <input type="tel" id="whatsappNumber" required placeholder="(99) 99999-9999" pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}">
-                    <small>🔒 O pedido será enviado para este WhatsApp quando você clicar em enviar</small>
-                </div>
-
-                <div class="form-group">
                     <label>💝 Seu nome (opcional):</label>
                     <div class="anonimato">
                         <input type="text" id="remetente" placeholder="Seu nome">
@@ -626,7 +606,7 @@
                     <svg viewBox="0 0 24 24" fill="none">
                         <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="white" stroke="white" stroke-width="1"/>
                     </svg>
-                    Enviar Pedido de Amor via WhatsApp
+                    Enviar Pedido via WhatsApp
                 </button>
             </form>
         </div>
@@ -654,26 +634,8 @@
         let comboPrice = 0;
         let extraTotal = 0;
 
-        // Máscara para telefone
-        function maskTelefone(value) {
-            value = value.replace(/\D/g, '');
-            if (value.length <= 2) {
-                value = value.replace(/^(\d{0,2})/, '($1');
-            } else if (value.length <= 7) {
-                value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
-            } else {
-                value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
-            }
-            return value;
-        }
-
-        // Aplicar máscara ao telefone
-        const whatsappInput = document.getElementById('whatsappNumber');
-        if (whatsappInput) {
-            whatsappInput.addEventListener('input', (e) => {
-                e.target.value = maskTelefone(e.target.value);
-            });
-        }
+        // NÚMERO FIXO DO WHATSAPP
+        const WHATSAPP_NUMBER = "5598984673820";
 
         // Selecionar combo
         document.querySelectorAll('.combo-card').forEach(card => {
@@ -763,7 +725,7 @@
             }, 5000);
         }
 
-        // Enviar pedido via WhatsApp
+        // Enviar pedido via WhatsApp com número fixo
         document.getElementById('pedidoForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -772,14 +734,8 @@
                 return;
             }
             
-            const whatsappNumber = document.getElementById('whatsappNumber').value;
             const destinatario = document.getElementById('destinatario').value;
             const sala = document.getElementById('sala').value;
-            
-            if (!whatsappNumber || whatsappNumber.length < 14) {
-                alert('📱 Por favor, insira um número de WhatsApp válido no formato (99) 99999-9999');
-                return;
-            }
             
             if (!destinatario || !sala) {
                 alert('💕 Por favor, preencha o nome do destinatário e a sala! 💕');
@@ -831,11 +787,8 @@
             mensagem += `🎓 *Turma 302 e 303 agradece!* 🎓\n`;
             mensagem += `📅 ${new Date().toLocaleString('pt-BR')}`;
             
-            // Limpar número (remover espaços, parênteses, traços)
-            let numeroLimpo = whatsappNumber.replace(/\D/g, '');
-            
-            // URL do WhatsApp
-            const urlWhatsApp = `https://wa.me/55${numeroLimpo}?text=${encodeURIComponent(mensagem)}`;
+            // URL do WhatsApp com número fixo
+            const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
             
             // Mostrar animações
             for(let i = 0; i < 30; i++) {
@@ -856,7 +809,7 @@
             `;
             document.getElementById('modal').style.display = 'flex';
             
-            // Reset do formulário (opcional)
+            // Reset do formulário
             setTimeout(() => {
                 document.getElementById('pedidoForm').reset();
                 document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
@@ -864,7 +817,6 @@
                 comboPrice = 0;
                 extraTotal = 0;
                 document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
-                if (whatsappInput) whatsappInput.value = '';
             }, 100);
         });
         
