@@ -226,16 +226,6 @@
             width: auto;
         }
 
-        .telefone-input {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .telefone-input input {
-            flex: 1;
-        }
-
         .btn-submit {
             background: linear-gradient(135deg, #ff3366 0%, #ff6b6b 100%);
             color: white;
@@ -450,6 +440,16 @@
             color: #666;
         }
 
+        .whatsapp-badge {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2em;
@@ -559,11 +559,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label>📱 Número de WhatsApp/Telefone: *</label>
-                    <div class="telefone-input">
-                        <input type="tel" id="telefone" required placeholder="(99) 99999-9999" pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}">
-                    </div>
-                    <small>🔒 Enviaremos uma confirmação do pedido para este número</small>
+                    <label>📱 WhatsApp da pessoa que vai receber: * 
+                        <span class="whatsapp-badge">O pedido será enviado para este número</span>
+                    </label>
+                    <input type="tel" id="telefone" required placeholder="(99) 99999-9999" pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}">
+                    <small>📦 O pedido será notificado para este WhatsApp quando for entregue!</small>
                 </div>
 
                 <div class="form-group">
@@ -646,9 +646,9 @@
     <div id="loveOverlay" class="love-overlay">
         <div class="love-content">
             <h2>🎓 TURMA 302 E 303 AGRADECE! 🎓</h2>
-            <p>💝 Seu amor foi enviado com sucesso! 💝</p>
-            <p>✨ Espalhando amor pela escola... ✨</p>
-            <div style="font-size: 3em; margin-top: 20px;" id="heartsAnimation">❤️</div>
+            <p>💝 Seu pedido de amor foi enviado com sucesso! 💝</p>
+            <p>📦 Em breve a pessoa amada receberá a notificação no WhatsApp!</p>
+            <div style="font-size: 3em; margin-top: 20px;">❤️</div>
         </div>
     </div>
 
@@ -785,7 +785,7 @@
             }
             
             if (!telefone || telefone.length < 14) {
-                alert('📱 Por favor, insira um número de telefone válido no formato (99) 99999-9999');
+                alert('📱 Por favor, insira o WhatsApp da pessoa que vai receber o pedido no formato (99) 99999-9999');
                 return;
             }
             
@@ -831,27 +831,11 @@
                     
                     showLoveAnimation();
                     
-                    try {
-                        await fetch('/api/enviar-confirmacao', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                telefone: telefone,
-                                nomeDestinatario: destinatario,
-                                pedidoId: result.id,
-                                valorTotal: comboPrice + extraTotal
-                            })
-                        });
-                    } catch(err) {
-                        console.log('Confirmação opcional não enviada');
-                    }
-                    
                     document.getElementById('modalMessage').innerHTML = `
                         <strong>Pedido #${result.id}</strong><br>
                         <strong>Total: R$ ${pedido.valor_total.toFixed(2)}</strong><br><br>
-                        💝 Confirmação enviada para o WhatsApp! 💝<br>
+                        💝 Presente reservado para <strong>${destinatario}</strong>! 💝<br>
+                        📱 O WhatsApp <strong>${telefone}</strong> receberá a notificação da entrega!<br>
                         🎓 Turma 302 e 303 agradece! 🎓
                     `;
                     document.getElementById('modal').style.display = 'flex';
