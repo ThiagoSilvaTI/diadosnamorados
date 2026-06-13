@@ -28,7 +28,7 @@
             z-index: 1;
         }
 
-        /* Header */
+        /* Header com animação da turma */
         .header {
             text-align: center;
             color: white;
@@ -40,11 +40,27 @@
             font-size: 3em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             margin-bottom: 10px;
+            animation: pulse 2s infinite;
         }
 
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+        .turma-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ff3366);
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-top: 10px;
+            font-weight: bold;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255,51,102,0.5); }
+            50% { box-shadow: 0 0 20px rgba(255,51,102,0.8); }
         }
 
         /* Cards de combos */
@@ -75,6 +91,12 @@
         .combo-card.selected {
             border: 3px solid #ff3366;
             background: linear-gradient(135deg, #fff 0%, #ffe6f0 100%);
+            animation: borderPulse 1s infinite;
+        }
+
+        @keyframes borderPulse {
+            0%, 100% { border-color: #ff3366; }
+            50% { border-color: #ff6b6b; }
         }
 
         .combo-icon {
@@ -84,6 +106,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .combo-card:hover .combo-icon {
+            transform: scale(1.1);
         }
 
         .combo-icon svg {
@@ -172,6 +200,14 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: #f0f0f0;
+            border-radius: 10px;
+            transform: translateX(5px);
         }
 
         .checkbox-item svg {
@@ -210,6 +246,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-submit svg {
@@ -222,36 +260,55 @@
             box-shadow: 0 5px 15px rgba(255,51,102,0.4);
         }
 
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-submit:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
         .valor-total {
             font-size: 1.5em;
             text-align: center;
             margin: 20px 0;
             padding: 15px;
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #f0f0f0 0%, #ffe6f0 100%);
             border-radius: 10px;
             font-weight: bold;
             color: #ff3366;
+            animation: fadeInUp 0.5s ease;
         }
 
-        /* Animações */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        /* Animações de corações */
         @keyframes floatHeart {
             0% {
-                transform: translateY(100vh) rotate(0deg);
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100px) rotate(360deg);
+                transform: translateY(-100px) rotate(360deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes floatHeartLarge {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(720deg) scale(2);
                 opacity: 0;
             }
         }
@@ -259,10 +316,110 @@
         .heart {
             position: fixed;
             bottom: -50px;
-            font-size: 24px;
+            font-size: 30px;
             pointer-events: none;
-            animation: floatHeart linear forwards;
             z-index: 1000;
+            filter: drop-shadow(0 0 10px rgba(255,51,102,0.8));
+            animation: floatHeart linear forwards;
+        }
+
+        .heart-large {
+            font-size: 50px;
+            animation: floatHeartLarge linear forwards;
+            filter: drop-shadow(0 0 15px rgba(255,51,102,0.9));
+        }
+
+        /* Animação de amor especial da Turma 302 e 303 */
+        .love-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .love-content {
+            text-align: center;
+            color: white;
+            animation: zoomIn 0.6s ease;
+        }
+
+        .love-content h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff3366, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 1s infinite;
+        }
+
+        .love-content p {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff3366;
+            position: absolute;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Modal */
@@ -274,7 +431,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.8);
-            z-index: 2000;
+            z-index: 10000;
             justify-content: center;
             align-items: center;
         }
@@ -285,7 +442,7 @@
             border-radius: 20px;
             text-align: center;
             max-width: 400px;
-            animation: fadeInDown 0.5s ease;
+            animation: zoomIn 0.5s ease;
         }
 
         .modal-content h2 {
@@ -302,6 +459,12 @@
             margin-top: 20px;
             cursor: pointer;
             font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            transform: scale(1.05);
+            background: #ff6b6b;
         }
 
         /* Responsividade */
@@ -321,16 +484,19 @@
         <div class="header">
             <h1>💝 LoveExpress 💝</h1>
             <p>Surpreenda seu amor com um presente especial!</p>
+            <div class="turma-badge">
+                🎓 Turma 302 e 303 agradece seu amor! 🎓
+            </div>
         </div>
 
         <div class="combos-grid">
+            <!-- Combo Simples com SVG vibrante -->
             <div class="combo-card" data-combo="simples" data-price="3">
                 <div class="combo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="2" fill="white"/>
-                        <path d="M22 7L12 13L2 7" stroke="#FF3366" stroke-width="2" fill="none"/>
-                        <circle cx="12" cy="12" r="2" fill="#FF3366"/>
-                        <path d="M8 12V16M16 12V16" stroke="#FF3366" stroke-width="2"/>
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M22 7L12 13L2 7" stroke="white" stroke-width="2" fill="none"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
                     </svg>
                 </div>
                 <div class="combo-title">Combo Simples</div>
@@ -338,25 +504,27 @@
                 <ul class="combo-items">
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                            <path d="M22 7L12 13L2 7" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/>
                         </svg>
                         1 cartinha especial
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                            <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                            <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M12 8V12L15 15" stroke="white" stroke-width="2"/>
                         </svg>
                         1 bombom
                     </li>
                 </ul>
             </div>
 
+            <!-- Combo Romântico -->
             <div class="combo-card" data-combo="romantico" data-price="10">
                 <div class="combo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 24 24" fill="none">
                         <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
+                        <path d="M12 15L10 13M12 15L14 13M12 15V9" stroke="white" stroke-width="1.5"/>
                     </svg>
                 </div>
                 <div class="combo-title">Combo Romântico</div>
@@ -364,34 +532,37 @@
                 <ul class="combo-items">
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/>
                         </svg>
                         1 cartinha especial
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                            <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                            <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M12 8V12L15 15" stroke="white" stroke-width="2"/>
+                            <circle cx="18" cy="6" r="3" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
                         </svg>
                         2 bombons
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
                         </svg>
                         1 rosa artificial
                     </li>
                 </ul>
             </div>
 
+            <!-- Combo Especial -->
             <div class="combo-card" data-combo="especial" data-price="14">
                 <div class="combo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="2" y="6" width="20" height="12" rx="2" stroke="#FF3366" stroke-width="2" fill="none"/>
-                        <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="2" fill="white"/>
                         <path d="M16 6L18 3M8 6L6 3" stroke="#FF3366" stroke-width="2"/>
-                        <path d="M18 12H20" stroke="#FF3366" stroke-width="2"/>
-                        <path d="M4 12H6" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M18 12H20M4 12H6" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M12 12V14" stroke="white" stroke-width="1.5"/>
                     </svg>
                 </div>
                 <div class="combo-title">Combo Especial</div>
@@ -399,38 +570,40 @@
                 <ul class="combo-items">
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/>
                         </svg>
                         1 cartinha especial
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <rect x="2" y="6" width="20" height="12" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                            <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                            <rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <circle cx="12" cy="12" r="2" fill="white"/>
                         </svg>
                         1 foto polaroide
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                            <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                            <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M12 8V12L15 15" stroke="white" stroke-width="2"/>
                         </svg>
                         2 bombons
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
                         </svg>
                         Rosa Artificial
                     </li>
                 </ul>
             </div>
 
+            <!-- Combo Amizade -->
             <div class="combo-card" data-combo="amizade" data-price="5">
                 <div class="combo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="8" r="4" stroke="#FF3366" stroke-width="2" fill="none"/>
-                        <path d="M20 21V19C20 16.8 18.2 15 16 15H8C5.8 15 4 16.8 4 19V21" stroke="#FF3366" stroke-width="2"/>
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4" fill="#FF3366" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M20 21V19C20 16.8 18.2 15 16 15H8C5.8 15 4 16.8 4 19V21" stroke="#FF3366" stroke-width="2" fill="none"/>
                         <path d="M16 3.13C16.6 3.4 17 4 17 4.7" stroke="#FF3366" stroke-width="2"/>
                         <path d="M8 3.13C7.4 3.4 7 4 7 4.7" stroke="#FF3366" stroke-width="2"/>
                     </svg>
@@ -440,14 +613,14 @@
                 <ul class="combo-items">
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L15 8H22L16 12L19 18L12 14L5 18L8 12L2 8H9L12 2Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M12 2L15 8H22L16 12L19 18L12 14L5 18L8 12L2 8H9L12 2Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
                         </svg>
                         Cartinha divertida
                     </li>
                     <li>
                         <svg viewBox="0 0 24 24" fill="none">
-                            <rect x="6" y="4" width="12" height="16" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                            <path d="M10 8H14M10 12H14M10 16H12" stroke="#FF3366" stroke-width="1.5"/>
+                            <rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                            <path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/>
                         </svg>
                         Pacote de bombom (fini)
                     </li>
@@ -458,13 +631,7 @@
         <div class="form-section">
             <form id="pedidoForm">
                 <div class="form-group">
-                    <label>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
-                            <circle cx="12" cy="8" r="4" stroke="#333" stroke-width="2" fill="none"/>
-                            <path d="M20 21V19C20 16.8 18.2 15 16 15H8C5.8 15 4 16.8 4 19V21" stroke="#333" stroke-width="2"/>
-                        </svg>
-                        Seu nome (opcional):
-                    </label>
+                    <label>💝 Seu nome (opcional):</label>
                     <div class="anonimato">
                         <input type="text" id="remetente" placeholder="Seu nome">
                         <label>
@@ -474,23 +641,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
-                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#333" stroke-width="1.5"/>
-                        </svg>
-                        Nome da pessoa amada: *
-                    </label>
+                    <label>💕 Nome da pessoa amada: *</label>
                     <input type="text" id="destinatario" required placeholder="Nome da pessoa que vai receber">
                 </div>
 
                 <div class="form-group">
-                    <label>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
-                            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#333" stroke-width="2" fill="none"/>
-                            <path d="M8 10H16M8 14H12" stroke="#333" stroke-width="2"/>
-                        </svg>
-                        Sala: *
-                    </label>
+                    <label>🏫 Sala: *</label>
                     <select id="sala" required>
                         <option value="">Selecione a sala</option>
                         <option value="101">Sala 101</option>
@@ -513,42 +669,42 @@
                     <div class="checkbox-group">
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="foto" data-price="3">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
-                                <rect x="2" y="6" width="20" height="12" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                                <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                                <circle cx="12" cy="12" r="2" fill="white"/>
                             </svg>
                             Foto polaroide - R$ 3,00
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="bombom" data-price="1.5">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
-                                <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                                <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                                <path d="M12 8V12L15 15" stroke="white" stroke-width="1.5"/>
                             </svg>
                             Bombom extra - R$ 1,50
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="spotify" data-price="5">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
-                                <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                                <path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="#FF3366" stroke-width="1.5"/>
-                                <path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="#FF3366" stroke-width="1.5"/>
-                                <circle cx="12" cy="16" r="1" fill="#FF3366"/>
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                                <path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="white" stroke-width="1.5"/>
+                                <path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="white" stroke-width="1.5"/>
+                                <circle cx="12" cy="16" r="1" fill="white"/>
                             </svg>
                             Polaroide com código Spotify - R$ 5,00
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="rosa" data-price="2">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
-                                <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
                             </svg>
                             Rosa artificial extra - R$ 2,00
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="fini" data-price="3">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
-                                <rect x="6" y="4" width="12" height="16" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
-                                <path d="M10 8H14M10 12H14M10 16H12" stroke="#FF3366" stroke-width="1.5"/>
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
+                                <path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/>
                             </svg>
                             Pacote Fini - R$ 3,00
                         </label>
@@ -556,13 +712,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#333" stroke-width="1.5" fill="none"/>
-                            <path d="M22 7L12 13L2 7" stroke="#333" stroke-width="1.5" fill="none"/>
-                        </svg>
-                        Serenata (opcional):
-                    </label>
+                    <label>💌 Serenata (opcional):</label>
                     <textarea id="serenata" rows="3" placeholder="Escreva uma mensagem especial..."></textarea>
                 </div>
 
@@ -585,6 +735,15 @@
             <h2>❤️ Pedido Realizado! ❤️</h2>
             <p id="modalMessage"></p>
             <button onclick="closeModal()">Fechar</button>
+        </div>
+    </div>
+
+    <div id="loveOverlay" class="love-overlay">
+        <div class="love-content">
+            <h2>🎓 TURMA 302 E 303 AGRADECE! 🎓</h2>
+            <p>💝 Seu amor foi enviado com sucesso! 💝</p>
+            <p>✨ Espalhando amor pela escola... ✨</p>
+            <div style="font-size: 3em; margin-top: 20px;" id="heartsAnimation">❤️</div>
         </div>
     </div>
 
@@ -623,26 +782,76 @@
         // Criar corações animados
         function createHeart() {
             const heart = document.createElement('div');
-            heart.innerHTML = ['❤️', '💝', '💗', '💓', '💕', '💖'][Math.floor(Math.random() * 6)];
+            const hearts = ['❤️', '💝', '💗', '💓', '💕', '💖', '💘', '💞'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
             heart.classList.add('heart');
+            
+            // Random size between 20px and 40px
+            const size = Math.random() * 20 + 20;
+            heart.style.fontSize = size + 'px';
             heart.style.left = Math.random() * 100 + '%';
-            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            
             document.body.appendChild(heart);
             
             setTimeout(() => {
                 heart.remove();
-            }, 7000);
+            }, 8000);
         }
 
-        setInterval(createHeart, 300);
+        // Animação de amor especial
+        function showLoveAnimation() {
+            const overlay = document.getElementById('loveOverlay');
+            overlay.style.display = 'flex';
+            
+            // Criar corações gigantes
+            for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = ['❤️', '💝', '💗', '💖'][Math.floor(Math.random() * 4)];
+                    heart.classList.add('heart-large');
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    overlay.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 100);
+            }
+            
+            // Criar confetes
+            for(let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    overlay.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+            
+            // Fechar após 5 segundos
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                while(overlay.firstChild) {
+                    if(overlay.firstChild !== document.querySelector('.love-content')) {
+                        overlay.removeChild(overlay.firstChild);
+                    } else {
+                        break;
+                    }
+                }
+            }, 5000);
+        }
 
         // Enviar pedido
         document.getElementById('pedidoForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             if (!selectedCombo) {
-                alert('Por favor, selecione um combo! 💝');
+                alert('💝 Por favor, selecione um combo especial! 💝');
                 return;
             }
             
@@ -650,7 +859,7 @@
             const sala = document.getElementById('sala').value;
             
             if (!destinatario || !sala) {
-                alert('Por favor, preencha o nome do destinatário e a sala!');
+                alert('💕 Por favor, preencha o nome do destinatário e a sala! 💕');
                 return;
             }
             
@@ -658,7 +867,7 @@
             const remetente = anonimo ? '' : document.getElementById('remetente').value;
             
             if (!anonimo && !remetente) {
-                alert('Por favor, digite seu nome ou marque anônimo!');
+                alert('💖 Por favor, digite seu nome ou marque anônimo! 💖');
                 return;
             }
             
@@ -689,14 +898,19 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    for(let i = 0; i < 20; i++) {
-                        setTimeout(() => createHeart(), i * 100);
+                    // Animação de corações
+                    for(let i = 0; i < 30; i++) {
+                        setTimeout(() => createHeart(), i * 80);
                     }
                     
+                    // Mostrar animação especial da Turma 302 e 303
+                    showLoveAnimation();
+                    
                     document.getElementById('modalMessage').innerHTML = `
-                        Pedido #${result.id} realizado com sucesso!<br>
-                        Total: R$ ${pedido.valor_total.toFixed(2)}<br>
-                        ❤️ O amor vai chegar em breve! ❤️
+                        <strong>Pedido #${result.id}</strong><br>
+                        <strong>Total: R$ ${pedido.valor_total.toFixed(2)}</strong><br><br>
+                        💝 O amor vai chegar em breve! 💝<br>
+                        🎓 Turma 302 e 303 agradece! 🎓
                     `;
                     document.getElementById('modal').style.display = 'flex';
                     
@@ -709,7 +923,7 @@
                     document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
                 }
             } catch (error) {
-                alert('Erro ao realizar pedido. Tente novamente!');
+                alert('💔 Erro ao realizar pedido. Tente novamente! 💔');
             }
         });
         
@@ -726,9 +940,12 @@
             }
         });
         
+        // Iniciar corações contínuos
+        setInterval(createHeart, 400);
+        
         // Efeito inicial
-        for(let i = 0; i < 10; i++) {
-            setTimeout(() => createHeart(), i * 200);
+        for(let i = 0; i < 15; i++) {
+            setTimeout(() => createHeart(), i * 150);
         }
     </script>
 </body>
