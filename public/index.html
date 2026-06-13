@@ -435,19 +435,18 @@
             background: #ff6b6b;
         }
 
-        small {
-            font-size: 0.85em;
-            color: #666;
+        .whatsapp-note {
+            background: #25D36610;
+            border: 1px solid #25D366;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            margin-top: 10px;
         }
 
-        .whatsapp-badge {
-            display: inline-block;
-            background: #25D366;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            margin-left: 10px;
+        .whatsapp-note small {
+            color: #25D366;
+            font-weight: bold;
         }
 
         @media (max-width: 768px) {
@@ -544,6 +543,12 @@
         <div class="form-section">
             <form id="pedidoForm">
                 <div class="form-group">
+                    <label>📱 Número do WhatsApp para receber o pedido: *</label>
+                    <input type="tel" id="whatsappNumber" required placeholder="(99) 99999-9999" pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}">
+                    <small>🔒 O pedido será enviado para este WhatsApp quando você clicar em enviar</small>
+                </div>
+
+                <div class="form-group">
                     <label>💝 Seu nome (opcional):</label>
                     <div class="anonimato">
                         <input type="text" id="remetente" placeholder="Seu nome">
@@ -556,14 +561,6 @@
                 <div class="form-group">
                     <label>💕 Nome da pessoa amada: *</label>
                     <input type="text" id="destinatario" required placeholder="Nome da pessoa que vai receber">
-                </div>
-
-                <div class="form-group">
-                    <label>📱 WhatsApp da pessoa que vai receber: * 
-                        <span class="whatsapp-badge">O pedido será enviado para este número</span>
-                    </label>
-                    <input type="tel" id="telefone" required placeholder="(99) 99999-9999" pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}">
-                    <small>📦 O pedido será notificado para este WhatsApp quando for entregue!</small>
                 </div>
 
                 <div class="form-group">
@@ -629,7 +626,7 @@
                     <svg viewBox="0 0 24 24" fill="none">
                         <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="white" stroke="white" stroke-width="1"/>
                     </svg>
-                    Enviar Pedido de Amor
+                    Enviar Pedido de Amor via WhatsApp
                 </button>
             </form>
         </div>
@@ -637,7 +634,7 @@
 
     <div id="modal" class="modal">
         <div class="modal-content">
-            <h2>❤️ Pedido Realizado! ❤️</h2>
+            <h2>❤️ Pedido Enviado! ❤️</h2>
             <p id="modalMessage"></p>
             <button onclick="closeModal()">Fechar</button>
         </div>
@@ -647,7 +644,7 @@
         <div class="love-content">
             <h2>🎓 TURMA 302 E 303 AGRADECE! 🎓</h2>
             <p>💝 Seu pedido de amor foi enviado com sucesso! 💝</p>
-            <p>📦 Em breve a pessoa amada receberá a notificação no WhatsApp!</p>
+            <p>📱 Verifique o WhatsApp agora mesmo!</p>
             <div style="font-size: 3em; margin-top: 20px;">❤️</div>
         </div>
     </div>
@@ -671,9 +668,9 @@
         }
 
         // Aplicar máscara ao telefone
-        const telefoneInput = document.getElementById('telefone');
-        if (telefoneInput) {
-            telefoneInput.addEventListener('input', (e) => {
+        const whatsappInput = document.getElementById('whatsappNumber');
+        if (whatsappInput) {
+            whatsappInput.addEventListener('input', (e) => {
                 e.target.value = maskTelefone(e.target.value);
             });
         }
@@ -766,8 +763,8 @@
             }, 5000);
         }
 
-        // Enviar pedido
-        document.getElementById('pedidoForm').addEventListener('submit', async (e) => {
+        // Enviar pedido via WhatsApp
+        document.getElementById('pedidoForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
             if (!selectedCombo) {
@@ -775,82 +772,100 @@
                 return;
             }
             
+            const whatsappNumber = document.getElementById('whatsappNumber').value;
             const destinatario = document.getElementById('destinatario').value;
             const sala = document.getElementById('sala').value;
-            const telefone = document.getElementById('telefone').value;
+            
+            if (!whatsappNumber || whatsappNumber.length < 14) {
+                alert('📱 Por favor, insira um número de WhatsApp válido no formato (99) 99999-9999');
+                return;
+            }
             
             if (!destinatario || !sala) {
                 alert('💕 Por favor, preencha o nome do destinatário e a sala! 💕');
                 return;
             }
             
-            if (!telefone || telefone.length < 14) {
-                alert('📱 Por favor, insira o WhatsApp da pessoa que vai receber o pedido no formato (99) 99999-9999');
-                return;
-            }
-            
             const anonimo = document.getElementById('anonimo').checked;
-            const remetente = anonimo ? '' : document.getElementById('remetente').value;
+            const remetente = anonimo ? 'Anônimo' : document.getElementById('remetente').value;
             
             if (!anonimo && !remetente) {
                 alert('💖 Por favor, digite seu nome ou marque anônimo! 💖');
                 return;
             }
             
-            const pedido = {
-                nome_remetente: remetente,
-                anonimo: anonimo,
-                nome_destinatario: destinatario,
-                telefone_destinatario: telefone,
-                sala: sala,
-                combo: selectedCombo,
-                foto_polaroide: document.querySelector('[data-extra="foto"]')?.checked ? 1 : 0,
-                bombom_extra: document.querySelector('[data-extra="bombom"]')?.checked ? 1 : 0,
-                polaroide_spotify: document.querySelector('[data-extra="spotify"]')?.checked ? 1 : 0,
-                rosa_extra: document.querySelector('[data-extra="rosa"]')?.checked ? 1 : 0,
-                pacote_fini: document.querySelector('[data-extra="fini"]')?.checked ? 1 : 0,
-                serenata: document.getElementById('serenata').value,
-                valor_total: comboPrice + extraTotal
-            };
+            // Coletar extras selecionados
+            let extrasList = [];
+            if (document.querySelector('[data-extra="foto"]')?.checked) extrasList.push('📸 Foto polaroide (R$ 3,00)');
+            if (document.querySelector('[data-extra="bombom"]')?.checked) extrasList.push('🍫 Bombom extra (R$ 1,50)');
+            if (document.querySelector('[data-extra="spotify"]')?.checked) extrasList.push('🎵 Polaroide Spotify (R$ 5,00)');
+            if (document.querySelector('[data-extra="rosa"]')?.checked) extrasList.push('🌹 Rosa extra (R$ 2,00)');
+            if (document.querySelector('[data-extra="fini"]')?.checked) extrasList.push('🍬 Pacote Fini (R$ 3,00)');
             
-            try {
-                const response = await fetch('/api/pedido', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(pedido)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    for(let i = 0; i < 30; i++) {
-                        setTimeout(() => createHeart(), i * 80);
-                    }
-                    
-                    showLoveAnimation();
-                    
-                    document.getElementById('modalMessage').innerHTML = `
-                        <strong>Pedido #${result.id}</strong><br>
-                        <strong>Total: R$ ${pedido.valor_total.toFixed(2)}</strong><br><br>
-                        💝 Presente reservado para <strong>${destinatario}</strong>! 💝<br>
-                        📱 O WhatsApp <strong>${telefone}</strong> receberá a notificação da entrega!<br>
-                        🎓 Turma 302 e 303 agradece! 🎓
-                    `;
-                    document.getElementById('modal').style.display = 'flex';
-                    
-                    document.getElementById('pedidoForm').reset();
-                    document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
-                    selectedCombo = null;
-                    comboPrice = 0;
-                    extraTotal = 0;
-                    document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
-                    if (telefoneInput) telefoneInput.value = '';
-                }
-            } catch (error) {
-                alert('💔 Erro ao realizar pedido. Tente novamente! 💔');
+            const extrasTexto = extrasList.length > 0 ? extrasList.join('\n') : 'Nenhum extra';
+            const serenata = document.getElementById('serenata').value;
+            const total = comboPrice + extraTotal;
+            
+            // Nome do combo
+            let comboNome = '';
+            switch(selectedCombo) {
+                case 'simples': comboNome = '💌 Combo Simples'; break;
+                case 'romantico': comboNome = '🌹 Combo Romântico'; break;
+                case 'especial': comboNome = '📸 Combo Especial'; break;
+                case 'amizade': comboNome = '🎉 Combo Amizade'; break;
             }
+            
+            // Montar mensagem do pedido
+            let mensagem = `💝 *NOVO PEDIDO - LOVEEXPRESS* 💝\n\n`;
+            mensagem += `*Combo:* ${comboNome}\n`;
+            mensagem += `*Valor:* R$ ${total.toFixed(2)}\n\n`;
+            mensagem += `*De:* ${remetente}\n`;
+            mensagem += `*Para:* ${destinatario}\n`;
+            mensagem += `*Sala:* ${sala}\n\n`;
+            mensagem += `*Extras:*\n${extrasTexto}\n\n`;
+            
+            if (serenata) {
+                mensagem += `*💌 Serenata:*\n${serenata}\n\n`;
+            }
+            
+            mensagem += `🎓 *Turma 302 e 303 agradece!* 🎓\n`;
+            mensagem += `📅 ${new Date().toLocaleString('pt-BR')}`;
+            
+            // Limpar número (remover espaços, parênteses, traços)
+            let numeroLimpo = whatsappNumber.replace(/\D/g, '');
+            
+            // URL do WhatsApp
+            const urlWhatsApp = `https://wa.me/55${numeroLimpo}?text=${encodeURIComponent(mensagem)}`;
+            
+            // Mostrar animações
+            for(let i = 0; i < 30; i++) {
+                setTimeout(() => createHeart(), i * 80);
+            }
+            
+            showLoveAnimation();
+            
+            // Abrir WhatsApp em nova aba
+            window.open(urlWhatsApp, '_blank');
+            
+            // Mostrar modal de confirmação
+            document.getElementById('modalMessage').innerHTML = `
+                <strong>Pedido gerado com sucesso!</strong><br><br>
+                📱 WhatsApp será aberto para enviar o pedido<br>
+                💝 Total: R$ ${total.toFixed(2)}<br><br>
+                ✅ Clique em enviar no WhatsApp para confirmar o pedido!
+            `;
+            document.getElementById('modal').style.display = 'flex';
+            
+            // Reset do formulário (opcional)
+            setTimeout(() => {
+                document.getElementById('pedidoForm').reset();
+                document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
+                selectedCombo = null;
+                comboPrice = 0;
+                extraTotal = 0;
+                document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
+                if (whatsappInput) whatsappInput.value = '';
+            }, 100);
         });
         
         function closeModal() {
