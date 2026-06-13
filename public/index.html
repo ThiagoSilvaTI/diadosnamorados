@@ -20,7 +20,6 @@
             overflow-x: hidden;
         }
 
-        /* Container principal */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -28,7 +27,6 @@
             z-index: 1;
         }
 
-        /* Header com animação da turma */
         .header {
             text-align: center;
             color: white;
@@ -63,7 +61,6 @@
             50% { box-shadow: 0 0 20px rgba(255,51,102,0.8); }
         }
 
-        /* Cards de combos */
         .combos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -154,7 +151,6 @@
             flex-shrink: 0;
         }
 
-        /* Formulário */
         .form-section {
             background: white;
             border-radius: 20px;
@@ -230,7 +226,16 @@
             width: auto;
         }
 
-        /* Botão */
+        .telefone-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .telefone-input input {
+            flex: 1;
+        }
+
         .btn-submit {
             background: linear-gradient(135deg, #ff3366 0%, #ff6b6b 100%);
             color: white;
@@ -260,24 +265,6 @@
             box-shadow: 0 5px 15px rgba(255,51,102,0.4);
         }
 
-        .btn-submit::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn-submit:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
         .valor-total {
             font-size: 1.5em;
             text-align: center;
@@ -290,7 +277,6 @@
             animation: fadeInUp 0.5s ease;
         }
 
-        /* Animações de corações */
         @keyframes floatHeart {
             0% {
                 transform: translateY(100vh) rotate(0deg) scale(0.5);
@@ -329,7 +315,6 @@
             filter: drop-shadow(0 0 15px rgba(255,51,102,0.9));
         }
 
-        /* Animação de amor especial da Turma 302 e 303 */
         .love-overlay {
             position: fixed;
             top: 0;
@@ -359,16 +344,10 @@
             animation: pulse 1s infinite;
         }
 
-        .love-content p {
-            font-size: 1.5em;
-            margin: 20px 0;
-        }
-
         .confetti {
             position: absolute;
             width: 10px;
             height: 10px;
-            background: #ff3366;
             position: absolute;
             animation: confettiFall 3s linear forwards;
         }
@@ -422,7 +401,6 @@
             }
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -467,7 +445,11 @@
             background: #ff6b6b;
         }
 
-        /* Responsividade */
+        small {
+            font-size: 0.85em;
+            color: #666;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2em;
@@ -490,7 +472,6 @@
         </div>
 
         <div class="combos-grid">
-            <!-- Combo Simples com SVG vibrante -->
             <div class="combo-card" data-combo="simples" data-price="3">
                 <div class="combo-icon">
                     <svg viewBox="0 0 24 24" fill="none">
@@ -502,24 +483,11 @@
                 <div class="combo-title">Combo Simples</div>
                 <div class="combo-price">R$ 3,00</div>
                 <ul class="combo-items">
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/>
-                        </svg>
-                        1 cartinha especial
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M12 8V12L15 15" stroke="white" stroke-width="2"/>
-                        </svg>
-                        1 bombom
-                    </li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/></svg> 1 cartinha especial</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M12 8V12L15 15" stroke="white" stroke-width="2"/></svg> 1 bombom</li>
                 </ul>
             </div>
 
-            <!-- Combo Romântico -->
             <div class="combo-card" data-combo="romantico" data-price="10">
                 <div class="combo-icon">
                     <svg viewBox="0 0 24 24" fill="none">
@@ -530,31 +498,12 @@
                 <div class="combo-title">Combo Romântico</div>
                 <div class="combo-price">R$ 10,00</div>
                 <ul class="combo-items">
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/>
-                        </svg>
-                        1 cartinha especial
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M12 8V12L15 15" stroke="white" stroke-width="2"/>
-                            <circle cx="18" cy="6" r="3" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
-                        </svg>
-                        2 bombons
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
-                        </svg>
-                        1 rosa artificial
-                    </li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/></svg> 1 cartinha especial</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M12 8V12L15 15" stroke="white" stroke-width="2"/></svg> 2 bombons</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/></svg> 1 rosa artificial</li>
                 </ul>
             </div>
 
-            <!-- Combo Especial -->
             <div class="combo-card" data-combo="especial" data-price="14">
                 <div class="combo-icon">
                     <svg viewBox="0 0 24 24" fill="none">
@@ -562,43 +511,18 @@
                         <circle cx="12" cy="12" r="2" fill="white"/>
                         <path d="M16 6L18 3M8 6L6 3" stroke="#FF3366" stroke-width="2"/>
                         <path d="M18 12H20M4 12H6" stroke="#FF3366" stroke-width="2"/>
-                        <path d="M12 12V14" stroke="white" stroke-width="1.5"/>
                     </svg>
                 </div>
                 <div class="combo-title">Combo Especial</div>
                 <div class="combo-price">R$ 14,00</div>
                 <ul class="combo-items">
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/>
-                        </svg>
-                        1 cartinha especial
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <circle cx="12" cy="12" r="2" fill="white"/>
-                        </svg>
-                        1 foto polaroide
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M12 8V12L15 15" stroke="white" stroke-width="2"/>
-                        </svg>
-                        2 bombons
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
-                        </svg>
-                        Rosa Artificial
-                    </li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M22 7L12 13L2 7" stroke="white" stroke-width="1.5" fill="none"/></svg> 1 cartinha especial</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="white"/></svg> 1 foto polaroide</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M12 8V12L15 15" stroke="white" stroke-width="2"/></svg> 2 bombons</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/></svg> Rosa Artificial</li>
                 </ul>
             </div>
 
-            <!-- Combo Amizade -->
             <div class="combo-card" data-combo="amizade" data-price="5">
                 <div class="combo-icon">
                     <svg viewBox="0 0 24 24" fill="none">
@@ -611,19 +535,8 @@
                 <div class="combo-title">Combo Amizade</div>
                 <div class="combo-price">R$ 5,00</div>
                 <ul class="combo-items">
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L15 8H22L16 12L19 18L12 14L5 18L8 12L2 8H9L12 2Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                        </svg>
-                        Cartinha divertida
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            <path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/>
-                        </svg>
-                        Pacote de bombom (fini)
-                    </li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L15 8H22L16 12L19 18L12 14L5 18L8 12L2 8H9L12 2Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/></svg> Cartinha divertida</li>
+                    <li><svg viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/></svg> Pacote de bombom (fini)</li>
                 </ul>
             </div>
         </div>
@@ -643,6 +556,14 @@
                 <div class="form-group">
                     <label>💕 Nome da pessoa amada: *</label>
                     <input type="text" id="destinatario" required placeholder="Nome da pessoa que vai receber">
+                </div>
+
+                <div class="form-group">
+                    <label>📱 Número de WhatsApp/Telefone: *</label>
+                    <div class="telefone-input">
+                        <input type="tel" id="telefone" required placeholder="(99) 99999-9999" pattern="\([0-9]{2}\) [0-9]{5}-[0-9]{4}">
+                    </div>
+                    <small>🔒 Enviaremos uma confirmação do pedido para este número</small>
                 </div>
 
                 <div class="form-group">
@@ -669,43 +590,27 @@
                     <div class="checkbox-group">
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="foto" data-price="3">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                                <circle cx="12" cy="12" r="2" fill="white"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="white"/></svg>
                             Foto polaroide - R$ 3,00
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="bombom" data-price="1.5">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                                <path d="M12 8V12L15 15" stroke="white" stroke-width="1.5"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M12 8V12L15 15" stroke="white" stroke-width="1.5"/></svg>
                             Bombom extra - R$ 1,50
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="spotify" data-price="5">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                                <path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="white" stroke-width="1.5"/>
-                                <path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="white" stroke-width="1.5"/>
-                                <circle cx="12" cy="16" r="1" fill="white"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="white" stroke-width="1.5"/><path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="white" stroke-width="1.5"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
                             Polaroide com código Spotify - R$ 5,00
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="rosa" data-price="2">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/></svg>
                             Rosa artificial extra - R$ 2,00
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" class="extra" data-extra="fini" data-price="3">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>
-                                <path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/></svg>
                             Pacote Fini - R$ 3,00
                         </label>
                     </div>
@@ -752,6 +657,27 @@
         let comboPrice = 0;
         let extraTotal = 0;
 
+        // Máscara para telefone
+        function maskTelefone(value) {
+            value = value.replace(/\D/g, '');
+            if (value.length <= 2) {
+                value = value.replace(/^(\d{0,2})/, '($1');
+            } else if (value.length <= 7) {
+                value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+            } else {
+                value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+            }
+            return value;
+        }
+
+        // Aplicar máscara ao telefone
+        const telefoneInput = document.getElementById('telefone');
+        if (telefoneInput) {
+            telefoneInput.addEventListener('input', (e) => {
+                e.target.value = maskTelefone(e.target.value);
+            });
+        }
+
         // Selecionar combo
         document.querySelectorAll('.combo-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -786,7 +712,6 @@
             heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
             heart.classList.add('heart');
             
-            // Random size between 20px and 40px
             const size = Math.random() * 20 + 20;
             heart.style.fontSize = size + 'px';
             heart.style.left = Math.random() * 100 + '%';
@@ -805,7 +730,6 @@
             const overlay = document.getElementById('loveOverlay');
             overlay.style.display = 'flex';
             
-            // Criar corações gigantes
             for(let i = 0; i < 50; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
@@ -814,12 +738,10 @@
                     heart.style.left = Math.random() * 100 + '%';
                     heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
                     overlay.appendChild(heart);
-                    
                     setTimeout(() => heart.remove(), 4000);
                 }, i * 100);
             }
             
-            // Criar confetes
             for(let i = 0; i < 100; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
@@ -828,12 +750,10 @@
                     confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
                     confetti.style.animationDelay = Math.random() * 2 + 's';
                     overlay.appendChild(confetti);
-                    
                     setTimeout(() => confetti.remove(), 3000);
                 }, i * 50);
             }
             
-            // Fechar após 5 segundos
             setTimeout(() => {
                 overlay.style.display = 'none';
                 while(overlay.firstChild) {
@@ -857,9 +777,15 @@
             
             const destinatario = document.getElementById('destinatario').value;
             const sala = document.getElementById('sala').value;
+            const telefone = document.getElementById('telefone').value;
             
             if (!destinatario || !sala) {
                 alert('💕 Por favor, preencha o nome do destinatário e a sala! 💕');
+                return;
+            }
+            
+            if (!telefone || telefone.length < 14) {
+                alert('📱 Por favor, insira um número de telefone válido no formato (99) 99999-9999');
                 return;
             }
             
@@ -875,13 +801,14 @@
                 nome_remetente: remetente,
                 anonimo: anonimo,
                 nome_destinatario: destinatario,
+                telefone_destinatario: telefone,
                 sala: sala,
                 combo: selectedCombo,
-                foto_polaroide: document.querySelector('[data-extra="foto"]').checked ? 1 : 0,
-                bombom_extra: document.querySelector('[data-extra="bombom"]').checked ? 1 : 0,
-                polaroide_spotify: document.querySelector('[data-extra="spotify"]').checked ? 1 : 0,
-                rosa_extra: document.querySelector('[data-extra="rosa"]').checked ? 1 : 0,
-                pacote_fini: document.querySelector('[data-extra="fini"]').checked ? 1 : 0,
+                foto_polaroide: document.querySelector('[data-extra="foto"]')?.checked ? 1 : 0,
+                bombom_extra: document.querySelector('[data-extra="bombom"]')?.checked ? 1 : 0,
+                polaroide_spotify: document.querySelector('[data-extra="spotify"]')?.checked ? 1 : 0,
+                rosa_extra: document.querySelector('[data-extra="rosa"]')?.checked ? 1 : 0,
+                pacote_fini: document.querySelector('[data-extra="fini"]')?.checked ? 1 : 0,
                 serenata: document.getElementById('serenata').value,
                 valor_total: comboPrice + extraTotal
             };
@@ -898,29 +825,44 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Animação de corações
                     for(let i = 0; i < 30; i++) {
                         setTimeout(() => createHeart(), i * 80);
                     }
                     
-                    // Mostrar animação especial da Turma 302 e 303
                     showLoveAnimation();
+                    
+                    try {
+                        await fetch('/api/enviar-confirmacao', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                telefone: telefone,
+                                nomeDestinatario: destinatario,
+                                pedidoId: result.id,
+                                valorTotal: comboPrice + extraTotal
+                            })
+                        });
+                    } catch(err) {
+                        console.log('Confirmação opcional não enviada');
+                    }
                     
                     document.getElementById('modalMessage').innerHTML = `
                         <strong>Pedido #${result.id}</strong><br>
                         <strong>Total: R$ ${pedido.valor_total.toFixed(2)}</strong><br><br>
-                        💝 O amor vai chegar em breve! 💝<br>
+                        💝 Confirmação enviada para o WhatsApp! 💝<br>
                         🎓 Turma 302 e 303 agradece! 🎓
                     `;
                     document.getElementById('modal').style.display = 'flex';
                     
-                    // Reset form
                     document.getElementById('pedidoForm').reset();
                     document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
                     selectedCombo = null;
                     comboPrice = 0;
                     extraTotal = 0;
                     document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
+                    if (telefoneInput) telefoneInput.value = '';
                 }
             } catch (error) {
                 alert('💔 Erro ao realizar pedido. Tente novamente! 💔');
@@ -931,7 +873,6 @@
             document.getElementById('modal').style.display = 'none';
         }
         
-        // Anônimo toggle
         document.getElementById('anonimo').addEventListener('change', (e) => {
             const remetenteInput = document.getElementById('remetente');
             remetenteInput.disabled = e.target.checked;
@@ -940,10 +881,8 @@
             }
         });
         
-        // Iniciar corações contínuos
         setInterval(createHeart, 400);
         
-        // Efeito inicial
         for(let i = 0; i < 15; i++) {
             setTimeout(() => createHeart(), i * 150);
         }
