@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💝 LoveExpress - Pedidos Dia dos Namorados 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Cards de combos */
+        .combos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .combo-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .combo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .combo-card.selected {
+            border: 3px solid #ff3366;
+            background: linear-gradient(135deg, #fff 0%, #ffe6f0 100%);
+        }
+
+        .combo-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .combo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .combo-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .combo-price {
+            font-size: 1.8em;
+            color: #ff3366;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .combo-items {
+            list-style: none;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        .combo-items li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .combo-items li svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Formulário */
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ff3366;
+            box-shadow: 0 0 5px rgba(255,51,102,0.3);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .anonimato {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .anonimato input {
+            width: auto;
+        }
+
+        /* Botão */
+        .btn-submit {
+            background: linear-gradient(135deg, #ff3366 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-submit svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,51,102,0.4);
+        }
+
+        .valor-total {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #ff3366;
+        }
+
+        /* Animações */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 24px;
+            pointer-events: none;
+            animation: floatHeart linear forwards;
+            z-index: 1000;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        .modal-content h2 {
+            color: #ff3366;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background: #ff3366;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .combos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💝 LoveExpress 💝</h1>
+            <p>Surpreenda seu amor com um presente especial!</p>
+        </div>
+
+        <div class="combos-grid">
+            <div class="combo-card" data-combo="simples" data-price="3">
+                <div class="combo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="2" fill="white"/>
+                        <path d="M22 7L12 13L2 7" stroke="#FF3366" stroke-width="2" fill="none"/>
+                        <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                        <path d="M8 12V16M16 12V16" stroke="#FF3366" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="combo-title">Combo Simples</div>
+                <div class="combo-price">R$ 3,00</div>
+                <ul class="combo-items">
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M22 7L12 13L2 7" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        1 cartinha especial
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        1 bombom
+                    </li>
+                </ul>
+            </div>
+
+            <div class="combo-card" data-combo="romantico" data-price="10">
+                <div class="combo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="combo-title">Combo Romântico</div>
+                <div class="combo-price">R$ 10,00</div>
+                <ul class="combo-items">
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        1 cartinha especial
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        2 bombons
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        1 rosa artificial
+                    </li>
+                </ul>
+            </div>
+
+            <div class="combo-card" data-combo="especial" data-price="14">
+                <div class="combo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="6" width="20" height="12" rx="2" stroke="#FF3366" stroke-width="2" fill="none"/>
+                        <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                        <path d="M16 6L18 3M8 6L6 3" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M18 12H20" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M4 12H6" stroke="#FF3366" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="combo-title">Combo Especial</div>
+                <div class="combo-price">R$ 14,00</div>
+                <ul class="combo-items">
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        1 cartinha especial
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="2" y="6" width="20" height="12" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                        </svg>
+                        1 foto polaroide
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        2 bombons
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        Rosa Artificial
+                    </li>
+                </ul>
+            </div>
+
+            <div class="combo-card" data-combo="amizade" data-price="5">
+                <div class="combo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="4" stroke="#FF3366" stroke-width="2" fill="none"/>
+                        <path d="M20 21V19C20 16.8 18.2 15 16 15H8C5.8 15 4 16.8 4 19V21" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M16 3.13C16.6 3.4 17 4 17 4.7" stroke="#FF3366" stroke-width="2"/>
+                        <path d="M8 3.13C7.4 3.4 7 4 7 4.7" stroke="#FF3366" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="combo-title">Combo Amizade</div>
+                <div class="combo-price">R$ 5,00</div>
+                <ul class="combo-items">
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L15 8H22L16 12L19 18L12 14L5 18L8 12L2 8H9L12 2Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        Cartinha divertida
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="6" y="4" width="12" height="16" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                            <path d="M10 8H14M10 12H14M10 16H12" stroke="#FF3366" stroke-width="1.5"/>
+                        </svg>
+                        Pacote de bombom (fini)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <form id="pedidoForm">
+                <div class="form-group">
+                    <label>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
+                            <circle cx="12" cy="8" r="4" stroke="#333" stroke-width="2" fill="none"/>
+                            <path d="M20 21V19C20 16.8 18.2 15 16 15H8C5.8 15 4 16.8 4 19V21" stroke="#333" stroke-width="2"/>
+                        </svg>
+                        Seu nome (opcional):
+                    </label>
+                    <div class="anonimato">
+                        <input type="text" id="remetente" placeholder="Seu nome">
+                        <label>
+                            <input type="checkbox" id="anonimo"> Permanecer anônimo
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
+                            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#333" stroke-width="1.5"/>
+                        </svg>
+                        Nome da pessoa amada: *
+                    </label>
+                    <input type="text" id="destinatario" required placeholder="Nome da pessoa que vai receber">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
+                            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#333" stroke-width="2" fill="none"/>
+                            <path d="M8 10H16M8 14H12" stroke="#333" stroke-width="2"/>
+                        </svg>
+                        Sala: *
+                    </label>
+                    <select id="sala" required>
+                        <option value="">Selecione a sala</option>
+                        <option value="101">Sala 101</option>
+                        <option value="102">Sala 102</option>
+                        <option value="103">Sala 103</option>
+                        <option value="104">Sala 104</option>
+                        <option value="201">Sala 201</option>
+                        <option value="202">Sala 202</option>
+                        <option value="203">Sala 203</option>
+                        <option value="204">Sala 204</option>
+                        <option value="301">Sala 301</option>
+                        <option value="302">Sala 302</option>
+                        <option value="303">Sala 303</option>
+                        <option value="304">Sala 304</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>✨ Extras (opcionais):</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="extra" data-extra="foto" data-price="3">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                                <rect x="2" y="6" width="20" height="12" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                                <circle cx="12" cy="12" r="2" fill="#FF3366"/>
+                            </svg>
+                            Foto polaroide - R$ 3,00
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="extra" data-extra="bombom" data-price="1.5">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                                <path d="M12 8V12L15 15" stroke="#FF3366" stroke-width="1.5"/>
+                            </svg>
+                            Bombom extra - R$ 1,50
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="extra" data-extra="spotify" data-price="5">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                                <path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="#FF3366" stroke-width="1.5"/>
+                                <path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="#FF3366" stroke-width="1.5"/>
+                                <circle cx="12" cy="16" r="1" fill="#FF3366"/>
+                            </svg>
+                            Polaroide com código Spotify - R$ 5,00
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="extra" data-extra="rosa" data-price="2">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                                <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="none" stroke="#FF3366" stroke-width="1.5"/>
+                            </svg>
+                            Rosa artificial extra - R$ 2,00
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="extra" data-extra="fini" data-price="3">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                                <rect x="6" y="4" width="12" height="16" rx="2" stroke="#FF3366" stroke-width="1.5" fill="none"/>
+                                <path d="M10 8H14M10 12H14M10 16H12" stroke="#FF3366" stroke-width="1.5"/>
+                            </svg>
+                            Pacote Fini - R$ 3,00
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display: inline; vertical-align: middle;">
+                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4Z" stroke="#333" stroke-width="1.5" fill="none"/>
+                            <path d="M22 7L12 13L2 7" stroke="#333" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        Serenata (opcional):
+                    </label>
+                    <textarea id="serenata" rows="3" placeholder="Escreva uma mensagem especial..."></textarea>
+                </div>
+
+                <div class="valor-total" id="valorTotal">
+                    Total: R$ 0,00
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="white" stroke="white" stroke-width="1"/>
+                    </svg>
+                    Enviar Pedido de Amor
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>❤️ Pedido Realizado! ❤️</h2>
+            <p id="modalMessage"></p>
+            <button onclick="closeModal()">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedCombo = null;
+        let comboPrice = 0;
+        let extraTotal = 0;
+
+        // Selecionar combo
+        document.querySelectorAll('.combo-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedCombo = card.dataset.combo;
+                comboPrice = parseFloat(card.dataset.price);
+                calcularTotal();
+            });
+        });
+
+        // Calcular total
+        function calcularTotal() {
+            extraTotal = 0;
+            document.querySelectorAll('.extra:checked').forEach(checkbox => {
+                extraTotal += parseFloat(checkbox.dataset.price);
+            });
+            
+            const total = comboPrice + extraTotal;
+            document.getElementById('valorTotal').innerHTML = `Total: R$ ${total.toFixed(2)}`;
+            return total;
+        }
+
+        document.querySelectorAll('.extra').forEach(checkbox => {
+            checkbox.addEventListener('change', calcularTotal);
+        });
+
+        // Criar corações animados
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤️', '💝', '💗', '💓', '💕', '💖'][Math.floor(Math.random() * 6)];
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 7000);
+        }
+
+        setInterval(createHeart, 300);
+
+        // Enviar pedido
+        document.getElementById('pedidoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!selectedCombo) {
+                alert('Por favor, selecione um combo! 💝');
+                return;
+            }
+            
+            const destinatario = document.getElementById('destinatario').value;
+            const sala = document.getElementById('sala').value;
+            
+            if (!destinatario || !sala) {
+                alert('Por favor, preencha o nome do destinatário e a sala!');
+                return;
+            }
+            
+            const anonimo = document.getElementById('anonimo').checked;
+            const remetente = anonimo ? '' : document.getElementById('remetente').value;
+            
+            if (!anonimo && !remetente) {
+                alert('Por favor, digite seu nome ou marque anônimo!');
+                return;
+            }
+            
+            const pedido = {
+                nome_remetente: remetente,
+                anonimo: anonimo,
+                nome_destinatario: destinatario,
+                sala: sala,
+                combo: selectedCombo,
+                foto_polaroide: document.querySelector('[data-extra="foto"]').checked ? 1 : 0,
+                bombom_extra: document.querySelector('[data-extra="bombom"]').checked ? 1 : 0,
+                polaroide_spotify: document.querySelector('[data-extra="spotify"]').checked ? 1 : 0,
+                rosa_extra: document.querySelector('[data-extra="rosa"]').checked ? 1 : 0,
+                pacote_fini: document.querySelector('[data-extra="fini"]').checked ? 1 : 0,
+                serenata: document.getElementById('serenata').value,
+                valor_total: comboPrice + extraTotal
+            };
+            
+            try {
+                const response = await fetch('/api/pedido', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(pedido)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    for(let i = 0; i < 20; i++) {
+                        setTimeout(() => createHeart(), i * 100);
+                    }
+                    
+                    document.getElementById('modalMessage').innerHTML = `
+                        Pedido #${result.id} realizado com sucesso!<br>
+                        Total: R$ ${pedido.valor_total.toFixed(2)}<br>
+                        ❤️ O amor vai chegar em breve! ❤️
+                    `;
+                    document.getElementById('modal').style.display = 'flex';
+                    
+                    // Reset form
+                    document.getElementById('pedidoForm').reset();
+                    document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
+                    selectedCombo = null;
+                    comboPrice = 0;
+                    extraTotal = 0;
+                    document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
+                }
+            } catch (error) {
+                alert('Erro ao realizar pedido. Tente novamente!');
+            }
+        });
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        // Anônimo toggle
+        document.getElementById('anonimo').addEventListener('change', (e) => {
+            const remetenteInput = document.getElementById('remetente');
+            remetenteInput.disabled = e.target.checked;
+            if (e.target.checked) {
+                remetenteInput.value = '';
+            }
+        });
+        
+        // Efeito inicial
+        for(let i = 0; i < 10; i++) {
+            setTimeout(() => createHeart(), i * 200);
+        }
+    </script>
+</body>
+</html>
