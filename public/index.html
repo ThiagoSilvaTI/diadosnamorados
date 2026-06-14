@@ -226,33 +226,50 @@
             width: auto;
         }
 
-        .btn-submit {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
+        .turma-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .turma-btn {
+            flex: 1;
+            padding: 15px;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2em;
             border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
-            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn-submit svg {
+        .turma-btn svg {
             width: 24px;
             height: 24px;
         }
 
-        .btn-submit:hover {
+        .btn-302 {
+            background: linear-gradient(135deg, #ff6b6b, #ff3366);
+            color: white;
+        }
+
+        .btn-302:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(37,211,102,0.4);
+            box-shadow: 0 5px 15px rgba(255,51,102,0.4);
+        }
+
+        .btn-303 {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .btn-303:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(79,172,254,0.4);
         }
 
         .valor-total {
@@ -443,6 +460,10 @@
             .combos-grid {
                 grid-template-columns: 1fr;
             }
+
+            .turma-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -452,7 +473,7 @@
             <h1>💝 LoveExpress 💝</h1>
             <p>Surpreenda seu amor com um presente especial!</p>
             <div class="turma-badge">
-                🎓 Turma 302 e 303 agradece seu amor! 🎓
+                🎓 Escolha sua turma: 302 ou 303 🎓
             </div>
         </div>
 
@@ -602,12 +623,23 @@
                     Total: R$ 0,00
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="white" stroke="white" stroke-width="1"/>
-                    </svg>
-                    Enviar Pedido via WhatsApp
-                </button>
+                <div class="form-group">
+                    <label>📱 Enviar pedido para:</label>
+                    <div class="turma-buttons">
+                        <button type="button" class="turma-btn btn-302" id="btnTurma302">
+                            <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
+                                <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="white" stroke="white" stroke-width="1"/>
+                            </svg>
+                            Turma 302 💝
+                        </button>
+                        <button type="button" class="turma-btn btn-303" id="btnTurma303">
+                            <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
+                                <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="white" stroke="white" stroke-width="1"/>
+                            </svg>
+                            Turma 303 💙
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -622,7 +654,7 @@
 
     <div id="loveOverlay" class="love-overlay">
         <div class="love-content">
-            <h2>🎓 TURMA 302 E 303 AGRADECE! 🎓</h2>
+            <h2>🎓 PEDIDO ENVIADO! 🎓</h2>
             <p>💝 Seu pedido de amor foi enviado com sucesso! 💝</p>
             <p>📱 Verifique o WhatsApp agora mesmo!</p>
             <div style="font-size: 3em; margin-top: 20px;">❤️</div>
@@ -634,8 +666,9 @@
         let comboPrice = 0;
         let extraTotal = 0;
 
-        // NÚMERO FIXO DO WHATSAPP
-        const WHATSAPP_NUMBER = "5598985639544";
+        // NÚMEROS FIXOS DO WHATSAPP
+        const WHATSAPP_302 = "5598992136809";  // Número da Turma 302
+        const WHATSAPP_303 = "5598985639544";  // Número da Turma 303 (AJUSTE AQUI)
 
         // Selecionar combo
         document.querySelectorAll('.combo-card').forEach(card => {
@@ -685,14 +718,32 @@
         }
 
         // Animação de amor especial
-        function showLoveAnimation() {
+        function showLoveAnimation(turma) {
             const overlay = document.getElementById('loveOverlay');
+            const loveContent = overlay.querySelector('.love-content');
+            
+            if (turma === '302') {
+                loveContent.innerHTML = `
+                    <h2>🎓 TURMA 302 AGRADECE! 🎓</h2>
+                    <p>💝 Seu pedido de amor foi enviado para a Turma 302! 💝</p>
+                    <p>📱 Verifique o WhatsApp agora mesmo!</p>
+                    <div style="font-size: 3em; margin-top: 20px;">❤️</div>
+                `;
+            } else {
+                loveContent.innerHTML = `
+                    <h2>🎓 TURMA 303 AGRADECE! 🎓</h2>
+                    <p>💙 Seu pedido de amor foi enviado para a Turma 303! 💙</p>
+                    <p>📱 Verifique o WhatsApp agora mesmo!</p>
+                    <div style="font-size: 3em; margin-top: 20px;">💙</div>
+                `;
+            }
+            
             overlay.style.display = 'flex';
             
             for(let i = 0; i < 50; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.innerHTML = ['❤️', '💝', '💗', '💖'][Math.floor(Math.random() * 4)];
+                    heart.innerHTML = turma === '302' ? '❤️' : '💙';
                     heart.classList.add('heart-large');
                     heart.style.left = Math.random() * 100 + '%';
                     heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
@@ -706,7 +757,7 @@
                     const confetti = document.createElement('div');
                     confetti.classList.add('confetti');
                     confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.backgroundColor = turma === '302' ? '#ff3366' : `hsl(${Math.random() * 360}, 100%, 50%)`;
                     confetti.style.animationDelay = Math.random() * 2 + 's';
                     overlay.appendChild(confetti);
                     setTimeout(() => confetti.remove(), 3000);
@@ -716,22 +767,21 @@
             setTimeout(() => {
                 overlay.style.display = 'none';
                 while(overlay.firstChild) {
-                    if(overlay.firstChild !== document.querySelector('.love-content')) {
+                    if(overlay.firstChild !== loveContent) {
                         overlay.removeChild(overlay.firstChild);
                     } else {
                         break;
                     }
                 }
+                loveContent.innerHTML = '';
             }, 5000);
         }
 
-        // Enviar pedido via WhatsApp com número fixo
-        document.getElementById('pedidoForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
+        // Função para enviar pedido
+        function enviarPedido(turma, numeroWhatsApp) {
             if (!selectedCombo) {
                 alert('💝 Por favor, selecione um combo especial! 💝');
-                return;
+                return false;
             }
             
             const destinatario = document.getElementById('destinatario').value;
@@ -739,7 +789,7 @@
             
             if (!destinatario || !sala) {
                 alert('💕 Por favor, preencha o nome do destinatário e a sala! 💕');
-                return;
+                return false;
             }
             
             const anonimo = document.getElementById('anonimo').checked;
@@ -747,7 +797,7 @@
             
             if (!anonimo && !remetente) {
                 alert('💖 Por favor, digite seu nome ou marque anônimo! 💖');
-                return;
+                return false;
             }
             
             // Coletar extras selecionados
@@ -773,6 +823,7 @@
             
             // Montar mensagem do pedido
             let mensagem = `💝 *NOVO PEDIDO - LOVEEXPRESS* 💝\n\n`;
+            mensagem += `*Turma:* ${turma}\n`;
             mensagem += `*Combo:* ${comboNome}\n`;
             mensagem += `*Valor:* R$ ${total.toFixed(2)}\n\n`;
             mensagem += `*De:* ${remetente}\n`;
@@ -784,18 +835,18 @@
                 mensagem += `*💌 Serenata:*\n${serenata}\n\n`;
             }
             
-            mensagem += `🎓 *Turma 302 e 303 agradece!* 🎓\n`;
+            mensagem += `🎓 *Turma ${turma} agradece!* 🎓\n`;
             mensagem += `📅 ${new Date().toLocaleString('pt-BR')}`;
             
-            // URL do WhatsApp com número fixo
-            const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+            // URL do WhatsApp
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             // Mostrar animações
             for(let i = 0; i < 30; i++) {
                 setTimeout(() => createHeart(), i * 80);
             }
             
-            showLoveAnimation();
+            showLoveAnimation(turma);
             
             // Abrir WhatsApp em nova aba
             window.open(urlWhatsApp, '_blank');
@@ -803,25 +854,34 @@
             // Mostrar modal de confirmação
             document.getElementById('modalMessage').innerHTML = `
                 <strong>Pedido gerado com sucesso!</strong><br><br>
-                📱 WhatsApp será aberto para enviar o pedido<br>
+                📱 WhatsApp será aberto para enviar o pedido para a <strong>Turma ${turma}</strong><br>
                 💝 Total: R$ ${total.toFixed(2)}<br><br>
                 ✅ Clique em enviar no WhatsApp para confirmar o pedido!
             `;
             document.getElementById('modal').style.display = 'flex';
             
-            // Reset do formulário
-            setTimeout(() => {
-                document.getElementById('pedidoForm').reset();
-                document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
-                selectedCombo = null;
-                comboPrice = 0;
-                extraTotal = 0;
-                document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
-            }, 100);
+            return true;
+        }
+
+        // Evento para Turma 302
+        document.getElementById('btnTurma302').addEventListener('click', () => {
+            enviarPedido('302', WHATSAPP_302);
+        });
+
+        // Evento para Turma 303
+        document.getElementById('btnTurma303').addEventListener('click', () => {
+            enviarPedido('303', WHATSAPP_303);
         });
         
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
+            // Reset do formulário após fechar modal
+            document.getElementById('pedidoForm').reset();
+            document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
+            selectedCombo = null;
+            comboPrice = 0;
+            extraTotal = 0;
+            document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
         }
         
         document.getElementById('anonimo').addEventListener('change', (e) => {
