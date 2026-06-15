@@ -185,35 +185,76 @@
             box-shadow: 0 0 5px rgba(255,51,102,0.3);
         }
 
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-
-        .checkbox-item {
+        .extra-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 5px;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 10px;
             transition: all 0.3s ease;
         }
 
-        .checkbox-item:hover {
+        .extra-item:hover {
             background: #f0f0f0;
-            border-radius: 10px;
             transform: translateX(5px);
         }
 
-        .checkbox-item svg {
-            width: 20px;
-            height: 20px;
+        .extra-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
         }
 
-        .checkbox-item input[type="checkbox"] {
-            width: auto;
+        .extra-info svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .extra-info span {
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        .extra-price {
+            color: #ff3366;
+            font-weight: bold;
+            min-width: 60px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #ff3366;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
         }
 
         .anonimato {
@@ -464,6 +505,15 @@
             .turma-buttons {
                 flex-direction: column;
             }
+
+            .extra-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .quantity-control {
+                align-self: flex-end;
+            }
         }
     </style>
 </head>
@@ -584,34 +634,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>✨ Extras (opcionais):</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" class="extra" data-extra="foto" data-price="3">
-                            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="white"/></svg>
-                            Foto polaroide - R$ 3,00
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" class="extra" data-extra="bombom" data-price="1.5">
-                            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M12 8V12L15 15" stroke="white" stroke-width="1.5"/></svg>
-                            Bombom extra - R$ 1,50
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" class="extra" data-extra="spotify" data-price="5">
-                            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="white" stroke-width="1.5"/><path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="white" stroke-width="1.5"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
-                            Polaroide com código Spotify - R$ 5,00
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" class="extra" data-extra="rosa" data-price="2">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/></svg>
-                            Rosa artificial extra - R$ 2,00
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" class="extra" data-extra="fini" data-price="3">
-                            <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/></svg>
-                            Pacote Fini - R$ 3,00
-                        </label>
-                    </div>
+                    <label>✨ Extras (opcionais - escolha a quantidade):</label>
+                    <div id="extrasContainer"></div>
                 </div>
 
                 <div class="form-group">
@@ -664,11 +688,88 @@
     <script>
         let selectedCombo = null;
         let comboPrice = 0;
-        let extraTotal = 0;
+        
+        // Configuração dos extras
+        const extras = [
+            { id: 'foto', nome: '📸 Foto polaroide', preco: 3.00, icone: '<rect x="2" y="6" width="20" height="12" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><circle cx="12" cy="12" r="2" fill="white"/>' },
+            { id: 'bombom', nome: '🍫 Bombom extra', preco: 1.50, icone: '<circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M12 8V12L15 15" stroke="white" stroke-width="1.5"/>' },
+            { id: 'spotify', nome: '🎵 Polaroide Spotify', preco: 5.00, icone: '<circle cx="12" cy="12" r="10" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M8 12C8 12 9.5 10.5 12 10.5C14.5 10.5 16 12 16 12" stroke="white" stroke-width="1.5"/><path d="M10 14C10 14 10.8 13.2 12 13.2C13.2 13.2 14 14 14 14" stroke="white" stroke-width="1.5"/><circle cx="12" cy="16" r="1" fill="white"/>' },
+            { id: 'rosa', nome: '🌹 Rosa artificial extra', preco: 2.00, icone: '<path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/>' },
+            { id: 'fini', nome: '🍬 Pacote Fini', preco: 3.00, icone: '<rect x="6" y="4" width="12" height="16" rx="2" fill="#FF3366" stroke="#FF3366" stroke-width="1.5"/><path d="M10 8H14M10 12H14M10 16H12" stroke="white" stroke-width="1.5"/>' }
+        ];
 
-        // NÚMEROS FIXOS DO WHATSAPP
-        const WHATSAPP_302 = "5598992136809";  // Número da Turma 302
-        const WHATSAPP_303 = "5598985639544";  // Número da Turma 303 (AJUSTE AQUI)
+        // Quantidades dos extras
+        let quantidades = {};
+        
+        // NÚMEROS FIXOS DO WHATSAPP"
+        const WHATSAPP_302 = "5598992136809";
+        const WHATSAPP_303 = "5598985639544";
+
+        // Inicializar quantidades
+        extras.forEach(extra => {
+            quantidades[extra.id] = 0;
+        });
+
+        // Renderizar extras
+        function renderizarExtras() {
+            const container = document.getElementById('extrasContainer');
+            container.innerHTML = '';
+            
+            extras.forEach(extra => {
+                const extraDiv = document.createElement('div');
+                extraDiv.className = 'extra-item';
+                extraDiv.innerHTML = `
+                    <div class="extra-info">
+                        <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
+                            ${extra.icone}
+                        </svg>
+                        <span>${extra.nome}</span>
+                        <span class="extra-price">R$ ${extra.preco.toFixed(2)}</span>
+                    </div>
+                    <div class="quantity-control">
+                        <button type="button" class="quantity-btn" data-id="${extra.id}" data-op="menos">-</button>
+                        <input type="number" class="quantity-input" id="qtd_${extra.id}" value="${quantidades[extra.id]}" min="0" max="99" step="1" data-id="${extra.id}">
+                        <button type="button" class="quantity-btn" data-id="${extra.id}" data-op="mais">+</button>
+                    </div>
+                `;
+                container.appendChild(extraDiv);
+            });
+            
+            // Adicionar eventos aos botões
+            document.querySelectorAll('.quantity-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = btn.dataset.id;
+                    const op = btn.dataset.op;
+                    const input = document.getElementById(`qtd_${id}`);
+                    let valor = parseInt(input.value) || 0;
+                    
+                    if (op === 'mais') {
+                        valor++;
+                    } else if (op === 'menos' && valor > 0) {
+                        valor--;
+                    }
+                    
+                    if (valor >= 0) {
+                        quantidades[id] = valor;
+                        input.value = valor;
+                        calcularTotal();
+                    }
+                });
+            });
+            
+            // Adicionar eventos aos inputs
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const id = input.dataset.id;
+                    let valor = parseInt(input.value) || 0;
+                    if (valor < 0) valor = 0;
+                    if (valor > 99) valor = 99;
+                    quantidades[id] = valor;
+                    input.value = valor;
+                    calcularTotal();
+                });
+            });
+        }
 
         // Selecionar combo
         document.querySelectorAll('.combo-card').forEach(card => {
@@ -683,19 +784,15 @@
 
         // Calcular total
         function calcularTotal() {
-            extraTotal = 0;
-            document.querySelectorAll('.extra:checked').forEach(checkbox => {
-                extraTotal += parseFloat(checkbox.dataset.price);
+            let extraTotal = 0;
+            extras.forEach(extra => {
+                extraTotal += quantidades[extra.id] * extra.preco;
             });
             
             const total = comboPrice + extraTotal;
             document.getElementById('valorTotal').innerHTML = `Total: R$ ${total.toFixed(2)}`;
             return total;
         }
-
-        document.querySelectorAll('.extra').forEach(checkbox => {
-            checkbox.addEventListener('change', calcularTotal);
-        });
 
         // Criar corações animados
         function createHeart() {
@@ -800,13 +897,17 @@
                 return false;
             }
             
-            // Coletar extras selecionados
+            // Coletar extras com quantidade
             let extrasList = [];
-            if (document.querySelector('[data-extra="foto"]')?.checked) extrasList.push('📸 Foto polaroide (R$ 3,00)');
-            if (document.querySelector('[data-extra="bombom"]')?.checked) extrasList.push('🍫 Bombom extra (R$ 1,50)');
-            if (document.querySelector('[data-extra="spotify"]')?.checked) extrasList.push('🎵 Polaroide Spotify (R$ 5,00)');
-            if (document.querySelector('[data-extra="rosa"]')?.checked) extrasList.push('🌹 Rosa extra (R$ 2,00)');
-            if (document.querySelector('[data-extra="fini"]')?.checked) extrasList.push('🍬 Pacote Fini (R$ 3,00)');
+            let extraTotal = 0;
+            extras.forEach(extra => {
+                const qtd = quantidades[extra.id];
+                if (qtd > 0) {
+                    const valorExtra = qtd * extra.preco;
+                    extrasList.push(`${extra.nome} x${qtd} = R$ ${valorExtra.toFixed(2)}`);
+                    extraTotal += valorExtra;
+                }
+            });
             
             const extrasTexto = extrasList.length > 0 ? extrasList.join('\n') : 'Nenhum extra';
             const serenata = document.getElementById('serenata').value;
@@ -825,7 +926,11 @@
             let mensagem = `💝 *NOVO PEDIDO - LOVEEXPRESS* 💝\n\n`;
             mensagem += `*Turma:* ${turma}\n`;
             mensagem += `*Combo:* ${comboNome}\n`;
-            mensagem += `*Valor:* R$ ${total.toFixed(2)}\n\n`;
+            mensagem += `*Valor Combo:* R$ ${comboPrice.toFixed(2)}\n`;
+            if (extraTotal > 0) {
+                mensagem += `*Valor Extras:* R$ ${extraTotal.toFixed(2)}\n`;
+            }
+            mensagem += `*Total do Pedido:* R$ ${total.toFixed(2)}\n\n`;
             mensagem += `*De:* ${remetente}\n`;
             mensagem += `*Para:* ${destinatario}\n`;
             mensagem += `*Sala:* ${sala}\n\n`;
@@ -880,7 +985,11 @@
             document.querySelectorAll('.combo-card').forEach(c => c.classList.remove('selected'));
             selectedCombo = null;
             comboPrice = 0;
-            extraTotal = 0;
+            // Reset quantidades
+            extras.forEach(extra => {
+                quantidades[extra.id] = 0;
+            });
+            renderizarExtras();
             document.getElementById('valorTotal').innerHTML = 'Total: R$ 0,00';
         }
         
@@ -892,6 +1001,8 @@
             }
         });
         
+        // Inicializar
+        renderizarExtras();
         setInterval(createHeart, 400);
         
         for(let i = 0; i < 15; i++) {
